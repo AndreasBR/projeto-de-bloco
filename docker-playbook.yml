@@ -1,0 +1,23 @@
+- hosts: localhost
+  become: true
+
+  tasks:
+    - name: Import Docker repository gpg key
+      rpm_key:
+        key: https://download.docker.com/linux/centos/gpg
+        state: present
+
+    - name: Add Docker repository
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+        force: yes
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+     
